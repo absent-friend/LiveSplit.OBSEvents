@@ -17,4 +17,8 @@
     <PackageReference Include="PolySharp" Version="1.15.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
 </Project>

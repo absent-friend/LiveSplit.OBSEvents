@@ -1,7 +1,9 @@
+using System;
 using System.Windows.Forms;
 using System.Xml;
 
 using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
 using LiveSplit.GoldGrabber.UI;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
@@ -10,8 +12,6 @@ namespace LiveSplit.GoldGrabber;
 
 public sealed class GoldGrabberComponent : LogicComponent
 {
-    public const string Name = "Gold Grabber";
-
     private readonly LiveSplitState _state;
     private readonly GoldGrabberSettings _settings;
 
@@ -19,7 +19,30 @@ public sealed class GoldGrabberComponent : LogicComponent
     {
         _state = state;
         _settings = new();
+
+        _state.OnSplit += _state_OnSplit;
     }
+
+    private async void _state_OnSplit(object sender, EventArgs e)
+    {
+        int index = _state.CurrentSplitIndex - 1;
+        TimingMethod method = _state.CurrentTimingMethod;
+        
+        bool isGold = LiveSplitStateHelper.CheckBestSegment(_state, index, method);
+        if (isGold)
+        {
+            try
+            {
+                TimeSpan segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(_state, index, method).Value;
+                await _settings.Client?.SaveGoldSegmentReplay(_state.Run[index].Name, segmentTime);
+            }
+            catch (Exception ex) {
+                Logger.Error(ex.Message);
+            }
+        }
+    }
+
+    public const string Name = "Gold Grabber";
 
     public override string ComponentName => Name;
 
@@ -45,10 +68,9 @@ public sealed class GoldGrabberComponent : LogicComponent
         return _settings;
     }
 
-    // Dispose is called when the component is removed from the layout or when the application is closed.
-    // Clean up resources like file handles or event listeners here.
     public override void Dispose()
     {
-
+        _state.OnSplit -= _state_OnSplit;
+        _settings.Client?.Dispose();
     }
 }
