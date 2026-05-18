@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LiveSplit.GoldGrabber.OBS
+namespace LiveSplit.OBSEvents.OBS
 {
     internal class ClientException(string message, Exception inner) : Exception(message, inner)
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal abstract class Request<T> : Message where T : RequestResponse
     {

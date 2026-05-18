@@ -2,17 +2,18 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using LiveSplit.GoldGrabber.OBS;
+using LiveSplit.OBSEvents.OBS;
+using LiveSplit.OBSEvents.Utility;
 using LiveSplit.UI;
 using LiveSplit.Web;
 
-namespace LiveSplit.GoldGrabber.UI;
+namespace LiveSplit.OBSEvents.UI;
 
-public partial class GoldGrabberSettings : UserControl
+public partial class OBSEventsSettings : UserControl
 {
-    private const string OBS_CONNECTION_INFO = "LiveSplit.GoldGrabber.ConnectionInfo";
+    private const string OBS_CONNECTION_INFO = "LiveSplit.OBSEvents.ConnectionInfo";
 
-    public GoldGrabberSettings()
+    public OBSEventsSettings()
     {
         InitializeComponent();
 

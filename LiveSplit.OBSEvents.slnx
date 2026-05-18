@@ -16,7 +16,7 @@
   </Folder>
 
   <Folder Name="/src/">
-    <Project Path="src/LiveSplit.GoldGrabber/LiveSplit.GoldGrabber.csproj" />
+    <Project Path="src/LiveSplit.GoldGrabber/LiveSplit.OBSEvents.csproj" />
   </Folder>
 
 </Solution>

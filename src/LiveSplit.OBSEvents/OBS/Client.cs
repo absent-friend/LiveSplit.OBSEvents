@@ -1,6 +1,7 @@
-﻿using LiveSplit.GoldGrabber.OBS.Protocol;
-using LiveSplit.GoldGrabber.OBS.Protocol.Requests;
-using LiveSplit.GoldGrabber.OBS.Protocol.Responses;
+﻿using LiveSplit.OBSEvents.OBS.Protocol;
+using LiveSplit.OBSEvents.OBS.Protocol.Requests;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses;
+using LiveSplit.OBSEvents.Utility;
 using LiveSplit.Web;
 using System;
 using System.IO;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LiveSplit.GoldGrabber.OBS
+namespace LiveSplit.OBSEvents.OBS
 {
     internal class Client : IDisposable
     {

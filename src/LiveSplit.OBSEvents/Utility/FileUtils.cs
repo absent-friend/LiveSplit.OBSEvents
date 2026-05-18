@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace LiveSplit.GoldGrabber
+namespace LiveSplit.OBSEvents.Utility
 {
     internal class FileUtils
     {

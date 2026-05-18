@@ -4,7 +4,7 @@ using System.Linq;
 
 using LiveSplit.Web;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal class RequestBatch(Message[] requests) : Message
     {

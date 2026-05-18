@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     /// <summary>
     /// Message used to authenticate with the OBS websocket server and establish session parameters.

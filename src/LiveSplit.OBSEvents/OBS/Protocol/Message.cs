@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LiveSplit.Web;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal abstract class Message
     {

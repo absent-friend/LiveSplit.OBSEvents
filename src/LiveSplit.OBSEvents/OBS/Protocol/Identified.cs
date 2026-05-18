@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.GoldGrabber.OBS.Protocol
+﻿namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal class Identified(int negotiatedRpcVersion)
     {

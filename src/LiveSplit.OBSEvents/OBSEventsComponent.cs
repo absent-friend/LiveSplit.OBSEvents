@@ -3,18 +3,19 @@ using System.Windows.Forms;
 using System.Xml;
 
 using LiveSplit.Model;
-using LiveSplit.GoldGrabber.UI;
+using LiveSplit.OBSEvents.UI;
+using LiveSplit.OBSEvents.Utility;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
 
-namespace LiveSplit.GoldGrabber;
+namespace LiveSplit.OBSEvents;
 
-public sealed class GoldGrabberComponent : LogicComponent
+public sealed class OBSEventsComponent : LogicComponent
 {
     private readonly LiveSplitState _state;
-    private readonly GoldGrabberSettings _settings;
+    private readonly OBSEventsSettings _settings;
 
-    public GoldGrabberComponent(LiveSplitState state)
+    public OBSEventsComponent(LiveSplitState state)
     {
         _state = state;
         _settings = new();

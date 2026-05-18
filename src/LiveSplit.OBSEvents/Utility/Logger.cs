@@ -1,7 +1,7 @@
 ﻿using LiveSplit.Options;
 using System;
 
-namespace LiveSplit.GoldGrabber
+namespace LiveSplit.OBSEvents.Utility
 {
     internal class Logger
     {
@@ -13,7 +13,7 @@ namespace LiveSplit.GoldGrabber
 
         private static string AddComponentPrefix(string message)
         {
-            return $"[LiveSplit.GoldGrabber] {message}";
+            return $"[LiveSplit.OBSEvents] {message}";
         }
 
         public static void AddErrorConsumer(Action<string> consumer)

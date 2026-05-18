@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.GoldGrabber.OBS.Protocol
+﻿namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal abstract class RequestResponse(string requestId, RequestStatus requestStatus)
     {

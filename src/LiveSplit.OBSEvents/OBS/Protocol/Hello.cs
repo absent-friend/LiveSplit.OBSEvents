@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.GoldGrabber.OBS.Protocol
+﻿namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     /// <summary>
     /// Message sent by OBS to begin the connection process and communicate features of the server.

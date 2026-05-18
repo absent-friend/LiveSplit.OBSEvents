@@ -1,6 +1,6 @@
-﻿namespace LiveSplit.GoldGrabber.UI;
+﻿namespace LiveSplit.OBSEvents.UI;
 
-partial class GoldGrabberSettings
+partial class OBSEventsSettings
 {
     /// <summary> 
     /// Required designer variable.
@@ -256,12 +256,12 @@ partial class GoldGrabberSettings
             this.textStatus.TabIndex = 2;
             this.textStatus.WordWrap = false;
             // 
-            // GoldGrabberSettings
+            // OBSEventsSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel2);
-            this.Name = "GoldGrabberSettings";
+            this.Name = "OBSEventsSettings";
             this.Size = new System.Drawing.Size(476, 542);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

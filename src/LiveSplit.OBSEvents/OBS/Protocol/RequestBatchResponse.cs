@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal class RequestBatchResponse(string requestId, IEnumerable<dynamic> results)
     {

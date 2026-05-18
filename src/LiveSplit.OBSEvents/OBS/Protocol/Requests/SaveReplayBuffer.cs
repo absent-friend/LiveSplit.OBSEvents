@@ -1,8 +1,8 @@
 ﻿using System;
 
-using LiveSplit.GoldGrabber.OBS.Protocol.Responses;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol.Requests
+namespace LiveSplit.OBSEvents.OBS.Protocol.Requests
 {
     internal class SaveReplayBuffer : Request<SaveReplayBufferResponse>
     {

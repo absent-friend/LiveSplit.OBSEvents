@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.GoldGrabber.OBS.Protocol.Responses
+﻿namespace LiveSplit.OBSEvents.OBS.Protocol.Responses
 {
     internal class SaveReplayBufferResponse(string requestId, RequestStatus requestStatus) : RequestResponse(requestId, requestStatus)
     {

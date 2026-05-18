@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+namespace LiveSplit.OBSEvents.OBS.Protocol
 {
     internal class Authentication
     {
