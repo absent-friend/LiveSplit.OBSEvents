@@ -1,9 +1,4 @@
-﻿using LiveSplit.Web;
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-
-namespace LiveSplit.GoldGrabber.OBS.Protocol
+﻿namespace LiveSplit.GoldGrabber.OBS.Protocol
 {
     /// <summary>
     /// Message sent by OBS to begin the connection process and communicate features of the server.

@@ -112,8 +112,6 @@ namespace LiveSplit.GoldGrabber.OBS
             
             try
             {
-                // TODO: log request errors that don't result in exceptions
-
                 if (_uri.IsLoopback)
                 {
                     // batch save + get filename so we can rename the file afterwards.

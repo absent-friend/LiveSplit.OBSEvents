@@ -13,20 +13,20 @@ public sealed class GoldGrabberFactory : IComponentFactory
     public string ComponentName => GoldGrabberComponent.Name;
 
     // The tooltip shown when hovering over the component when adding it to the layout.
-    public string Description => "A sample autosplitter component for LiveSplit.";
+    public string Description => "Connects to OBS and saves the replay buffer when you get a new best segment.";
 
     // Specifies the category of the component.
     // Determines under what category the component is listed when adding it to the layout.
     public ComponentCategory Category => ComponentCategory.Control;
 
     // A URL to the component's repository.
-    public string UpdateURL => "https://github.com/<author>/LiveSplit.GoldGrabber/releases/download";
+    public string UpdateURL => "https://github.com/absent-friend/LiveSplit.GoldGrabber/releases/download";
 
     // A URL to the component's update XML file.
     public string XMLURL => $"https://raw.githubusercontent.com/absent-friend/LiveSplit.GoldGrabber/main/Components/update.LiveSplit.GoldGrabber.xml";
 
     // The current version of the component.
-    public Version Version => Version.Parse("0.0.1");
+    public Version Version => Version.Parse("1.0.0");
 
     public IComponent Create(LiveSplitState state)
         => new GoldGrabberComponent(state);

@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using System.Xml;
 
 using LiveSplit.Model;
-using LiveSplit.Model.Comparisons;
 using LiveSplit.GoldGrabber.UI;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
