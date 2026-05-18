@@ -26,7 +26,7 @@ public sealed class OBSEventsFactory : IComponentFactory
     public string XMLURL => $"https://raw.githubusercontent.com/absent-friend/LiveSplit.OBSEvents/main/Components/update.LiveSplit.OBSEvents.xml";
 
     // The current version of the component.
-    public Version Version => Version.Parse("1.0.0");
+    public Version Version => Version.Parse("1.0.1");
 
     public IComponent Create(LiveSplitState state)
         => new OBSEventsComponent(state);

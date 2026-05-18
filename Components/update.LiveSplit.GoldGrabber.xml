@@ -1,17 +1,24 @@
 <updates>
 
-  <!-- Applied only when `version` is greater than `GoldGrabberFactory.Version`. -->
-  <update version="0.0.0">
-    <files>
-      <!-- Path to the updated file relative to `GoldGrabberFactory.UpdateURL`. -->
-      <!-- Possible values for `status` are: `added`, `changed`, `removed`. -->
-      <file path="Components/LiveSplit.GoldGrabber.dll" status="changed"/>
-    </files>
+    <update version="1.0.0">
+        <files>
+            <file path="/v1.0.0/LiveSplit.OBSEvents.dll" status="added"/>
+        </files>
 
-    <!-- Bullet point list of changes in this update. -->
-    <changelog>
-      <change>Added a sample feature</change>
-    </changelog>
-  </update>
+        <changelog>
+            <change>Initial release.</change>
+        </changelog>
+    </update>
+
+    <update version="1.0.1">
+        <files>
+            <file path="/v1.0.1/LiveSplit.OBSEvents.dll" status="changed"/>
+        </files>
+        <changelog>
+            <change>Fix a crash when you try to connect with a blank host setting.</change>
+            <change>Now defaults the "Connect Automatically" setting to true when first added to a layout.</change>
+            <change>Corrected the component name.</change>
+        </changelog>
+    </update>
 
 </updates>
