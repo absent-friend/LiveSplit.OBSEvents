@@ -39,7 +39,7 @@ public partial class OBSEventsSettings : UserControl
 
     public string Password { get; set; } = "";
 
-    public bool ConnectAutomatically { get; set; } = false;
+    public bool ConnectAutomatically { get; set; } = true;
 
     internal Client Client { get; private set; } = null;
 
