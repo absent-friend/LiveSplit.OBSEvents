@@ -56,7 +56,7 @@ public sealed class OBSEventsComponent : LogicComponent
         }
     }
 
-    public const string Name = "Gold Grabber";
+    public const string Name = "OBS Events";
 
     public override string ComponentName => Name;
 
