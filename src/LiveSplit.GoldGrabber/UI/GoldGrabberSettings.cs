@@ -9,7 +9,10 @@ namespace LiveSplit.GoldGrabber.UI;
 
 public partial class GoldGrabberSettings : UserControl
 {
+    private const string OBS_HOST_KEY = "LiveSplit.GoldGrabber.OBSHost";
+    private const string OBS_PORT_KEY = "LiveSplit.GoldGrabber.OBSPort";
     private const string OBS_PASSWORD_KEY = "LiveSplit.GoldGrabber.OBSPassword";
+    private const string OBS_CONNECTION_INFO = "LiveSplit.GoldGrabber.ConnectionInfo";
 
     public GoldGrabberSettings()
     {
@@ -73,16 +76,19 @@ public partial class GoldGrabberSettings : UserControl
         if (settings is not XmlElement element)
             return;
 
-        Host = SettingsHelper.ParseString(element[nameof(Host)], Host);
-        Port = SettingsHelper.ParseInt(element[nameof(Port)], Port);
-        Password = CredentialManager.ReadCredential(OBS_PASSWORD_KEY)?.Password ?? Password;
+        Credential connectionInfo = CredentialManager.ReadCredential(OBS_CONNECTION_INFO);
+        if (connectionInfo != null)
+        {
+            string[] authority = connectionInfo.UserName.Split(':');
+            Host = authority[0];
+            Port = int.Parse(authority[1]);
+            Password = connectionInfo.Password;
+        }
     }
 
     private int CreateSettingsNodes(XmlDocument document, XmlElement parent)
     {
-        return SettingsHelper.CreateSetting(document, parent, nameof(Host), Host)
-            ^ SettingsHelper.CreateSetting(document, parent, nameof(Port), Port)
-            ^ Password.GetHashCode();
+        return 0;
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
@@ -112,7 +118,9 @@ public partial class GoldGrabberSettings : UserControl
 
     private void buttonSavePassword_Click(object sender, EventArgs e)
     {
-        CredentialManager.DeleteCredential(OBS_PASSWORD_KEY);
-        CredentialManager.WriteCredential(OBS_PASSWORD_KEY, null, Password);
+        CredentialManager.DeleteCredential(OBS_CONNECTION_INFO);
+
+        string authority = $"{Host}:{Port}";
+        CredentialManager.WriteCredential(OBS_CONNECTION_INFO, authority, Password);
     }
 }

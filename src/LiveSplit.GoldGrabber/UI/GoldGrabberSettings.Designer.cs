@@ -54,7 +54,7 @@ partial class GoldGrabberSettings
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(455, 106);
+            this.groupBox1.Size = new System.Drawing.Size(455, 132);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "OBS Connection";
@@ -64,21 +64,23 @@ partial class GoldGrabberSettings
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.textPassword, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.textHost, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.textPort, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(449, 87);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(449, 113);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -117,7 +119,7 @@ partial class GoldGrabberSettings
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 52);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 35);
+            this.label3.Size = new System.Drawing.Size(53, 26);
             this.label3.TabIndex = 3;
             this.label3.Text = "Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -134,47 +136,47 @@ partial class GoldGrabberSettings
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.AutoSize = true;
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.Controls.Add(this.textPassword, 0, 0);
+            this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel3, 2);
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.buttonSavePassword, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(59, 52);
+            this.tableLayoutPanel3.Controls.Add(this.buttonConnectToObs, 0, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 78);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(390, 35);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(449, 35);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // textPassword
             // 
             this.textPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textPassword.Location = new System.Drawing.Point(3, 7);
+            this.textPassword.Location = new System.Drawing.Point(62, 55);
             this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(287, 20);
+            this.textPassword.Size = new System.Drawing.Size(384, 20);
             this.textPassword.TabIndex = 5;
             this.textPassword.UseSystemPasswordChar = true;
             // 
             // buttonSavePassword
             // 
-            this.buttonSavePassword.AutoSize = true;
             this.buttonSavePassword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSavePassword.Location = new System.Drawing.Point(296, 3);
+            this.buttonSavePassword.Location = new System.Drawing.Point(227, 3);
             this.buttonSavePassword.Name = "buttonSavePassword";
-            this.buttonSavePassword.Size = new System.Drawing.Size(91, 29);
+            this.buttonSavePassword.Size = new System.Drawing.Size(219, 29);
             this.buttonSavePassword.TabIndex = 6;
-            this.buttonSavePassword.Text = "Save Password";
+            this.buttonSavePassword.Text = "Save Connection Info";
             this.buttonSavePassword.UseVisualStyleBackColor = true;
             this.buttonSavePassword.Click += new System.EventHandler(this.buttonSavePassword_Click);
             // 
             // buttonConnectToObs
             // 
             this.buttonConnectToObs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonConnectToObs.Location = new System.Drawing.Point(3, 115);
+            this.buttonConnectToObs.Location = new System.Drawing.Point(3, 3);
             this.buttonConnectToObs.Name = "buttonConnectToObs";
-            this.buttonConnectToObs.Size = new System.Drawing.Size(455, 20);
+            this.buttonConnectToObs.Size = new System.Drawing.Size(218, 29);
             this.buttonConnectToObs.TabIndex = 1;
             this.buttonConnectToObs.Text = "Connect to OBS";
             this.buttonConnectToObs.UseVisualStyleBackColor = true;
@@ -185,13 +187,10 @@ partial class GoldGrabberSettings
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.buttonConnectToObs, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textStatus, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.textStatus, 0, 1);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 4;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(461, 536);
@@ -223,7 +222,6 @@ partial class GoldGrabberSettings
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
@@ -242,7 +240,7 @@ partial class GoldGrabberSettings
     private System.Windows.Forms.TextBox textPassword;
     private System.Windows.Forms.Button buttonConnectToObs;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-    private System.Windows.Forms.TextBox textStatus;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
     private System.Windows.Forms.Button buttonSavePassword;
+    private System.Windows.Forms.TextBox textStatus;
 }
