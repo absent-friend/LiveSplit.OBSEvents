@@ -6,7 +6,7 @@ For the moment, it only does the following:
 - When you start a run, it tells OBS to start the replay buffer.
 - When you get a best segment, it tells OBS to save the replay buffer.
   - If OBS is running locally, it also renames the file to `<segment_name>-<segment_time>.(mkv|mp4)`
-  - e.g. a 3:21.234 time in a segment named "Sunny Villa" becomes `Sunny Villa-3m21s234ms.mkv` (if you use `.mkv`)
+  - e.g. a 3:21.234 time in "Sunny Villa" becomes `Sunny Villa-3m21s234ms.mkv` (if you use `.mkv`)
  
 Planned additions:
 - Per-game configuration of the replay buffer length.
