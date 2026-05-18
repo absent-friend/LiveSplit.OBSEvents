@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.GoldGrabber.OBS;
@@ -9,9 +10,6 @@ namespace LiveSplit.GoldGrabber.UI;
 
 public partial class GoldGrabberSettings : UserControl
 {
-    private const string OBS_HOST_KEY = "LiveSplit.GoldGrabber.OBSHost";
-    private const string OBS_PORT_KEY = "LiveSplit.GoldGrabber.OBSPort";
-    private const string OBS_PASSWORD_KEY = "LiveSplit.GoldGrabber.OBSPassword";
     private const string OBS_CONNECTION_INFO = "LiveSplit.GoldGrabber.ConnectionInfo";
 
     public GoldGrabberSettings()
@@ -21,6 +19,7 @@ public partial class GoldGrabberSettings : UserControl
         textHost.DataBindings.Add(nameof(TextBox.Text), this, nameof(Host), false, DataSourceUpdateMode.OnPropertyChanged);
         textPort.DataBindings.Add(nameof(TextBox.Text), this, nameof(Port), false, DataSourceUpdateMode.OnPropertyChanged);
         textPassword.DataBindings.Add(nameof(TextBox.Text), this, nameof(Password), false, DataSourceUpdateMode.OnPropertyChanged);
+        checkAutoConnect.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(ConnectAutomatically), false, DataSourceUpdateMode.OnPropertyChanged);
 
         Logger.AddErrorConsumer(LogError);
         Logger.AddWarningConsumer(LogWarning);
@@ -33,6 +32,8 @@ public partial class GoldGrabberSettings : UserControl
     public int Port { get; set; } = 4455;
 
     public string Password { get; set; } = "";
+
+    public bool ConnectAutomatically { get; set; } = false;
 
     internal Client Client { get; private set; } = null;
 
@@ -84,14 +85,20 @@ public partial class GoldGrabberSettings : UserControl
             Port = int.Parse(authority[1]);
             Password = connectionInfo.Password;
         }
+        ConnectAutomatically = SettingsHelper.ParseBool(element[nameof(ConnectAutomatically)], true);
     }
 
     private int CreateSettingsNodes(XmlDocument document, XmlElement parent)
     {
-        return 0;
+        return SettingsHelper.CreateSetting(document, parent, nameof(ConnectAutomatically), ConnectAutomatically);
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
+    {
+        await InitClient();
+    }
+
+    public async Task InitClient()
     {
         if (Client != null && Client.IsConnected)
         {
@@ -99,20 +106,23 @@ public partial class GoldGrabberSettings : UserControl
         }
 
         Enabled = false;
+        labelConnectionStatus.Text = "Status: Connecting...";
         Logger.Info("Connecting...");
-        
+
         Client = new Client(Host, Port, Password);
         try
         {
             await Client.EstablishSession();
+            labelConnectionStatus.Text = "Status: Connected.";
             Logger.Info("Connected to OBS.");
         }
         catch (Exception ex)
         {
             Client = null;
+            labelConnectionStatus.Text = "Status: Failed to connect.";
             Logger.Error(ex.Message);
         }
-        
+
         Enabled = true;
     }
 

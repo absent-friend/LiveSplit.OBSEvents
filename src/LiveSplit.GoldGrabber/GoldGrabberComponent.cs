@@ -20,11 +20,25 @@ public sealed class GoldGrabberComponent : LogicComponent
         _state = state;
         _settings = new();
 
+        _state.OnStart += _state_OnStart;
         _state.OnSplit += _state_OnSplit;
+    }
+
+    private async void _state_OnStart(object sender, EventArgs e)
+    {
+        if (_settings.ConnectAutomatically)
+        {
+            await _settings.InitClient();
+        }
     }
 
     private async void _state_OnSplit(object sender, EventArgs e)
     {
+        if (_settings.Client == null)
+        {
+            return;
+        }
+
         int index = _state.CurrentSplitIndex - 1;
         TimingMethod method = _state.CurrentTimingMethod;
         
@@ -34,7 +48,7 @@ public sealed class GoldGrabberComponent : LogicComponent
             try
             {
                 TimeSpan segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(_state, index, method).Value;
-                await _settings.Client?.SaveGoldSegmentReplay(_state.Run[index].Name, segmentTime);
+                await _settings.Client.SaveGoldSegmentReplay(_state.Run[index].Name, segmentTime);
             }
             catch (Exception ex) {
                 Logger.Error(ex.Message);
