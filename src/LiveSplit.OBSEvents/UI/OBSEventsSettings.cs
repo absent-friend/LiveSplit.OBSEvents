@@ -22,6 +22,11 @@ public partial class OBSEventsSettings : UserControl
         textPassword.DataBindings.Add(nameof(TextBox.Text), this, nameof(Password), false, DataSourceUpdateMode.OnPropertyChanged);
         checkAutoConnect.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(ConnectAutomatically), false, DataSourceUpdateMode.OnPropertyChanged);
 
+        textHost.Validating += TextHost_Validating;
+        textPort.Validating += TextPort_Validating;
+
+        AutoValidate = AutoValidate.EnableAllowFocusChange;
+
         Logger.AddErrorConsumer(LogError);
         Logger.AddWarningConsumer(LogWarning);
         Logger.AddInfoConsumer(LogInfo);
@@ -46,19 +51,19 @@ public partial class OBSEventsSettings : UserControl
     private void LogError(string error)
     {
         string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[ERROR {timestamp}] {error}\r\n";
+        textStatus.Text += $"[ERROR {timestamp}]\r\n{error}\r\n\r\n";
     }
 
     private void LogWarning(string warning)
     {
         string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[WARN  {timestamp}] {warning}\r\n";
+        textStatus.Text += $"[WARNING {timestamp}]\r\n{warning}\r\n\r\n";
     }
 
     private void LogInfo(string info)
     {
         string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[INFO  {timestamp}] {info}\r\n";
+        textStatus.Text += $"[INFO {timestamp}]\r\n{info}\r\n\r\n";
     }
 
     public XmlNode GetSettings(XmlDocument document)
@@ -99,10 +104,32 @@ public partial class OBSEventsSettings : UserControl
         await InitClient();
     }
 
+    private void TextHost_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (textHost.Text.Trim().Length == 0)
+        {
+            e.Cancel = true;
+        }
+    }
+
+    private void TextPort_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (textPort.Text.Trim().Length == 0)
+        {
+            e.Cancel = true;
+        }
+    }
+
     public async Task InitClient()
     {
         if (Client != null && Client.IsConnected)
         {
+            return;
+        }
+
+        if (!ValidateChildren())
+        {
+            Logger.Error("Invalid settings. Make sure that you specified a host and a port.");
             return;
         }
 
