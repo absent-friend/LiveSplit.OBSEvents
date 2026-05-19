@@ -44,6 +44,7 @@ partial class OBSEventsSettings
             this.labelConnectionStatus = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textStatus = new System.Windows.Forms.TextBox();
+            this.checkShowDebugLog = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -233,10 +234,12 @@ partial class OBSEventsSettings
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.textStatus, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.textStatus, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.checkShowDebugLog, 0, 1);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(461, 536);
@@ -247,22 +250,37 @@ partial class OBSEventsSettings
             this.textStatus.AcceptsReturn = true;
             this.textStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textStatus.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textStatus.Location = new System.Drawing.Point(3, 164);
+            this.textStatus.Location = new System.Drawing.Point(3, 187);
             this.textStatus.Multiline = true;
             this.textStatus.Name = "textStatus";
             this.textStatus.ReadOnly = true;
             this.textStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textStatus.Size = new System.Drawing.Size(455, 369);
+            this.textStatus.Size = new System.Drawing.Size(455, 346);
             this.textStatus.TabIndex = 2;
+            this.textStatus.Visible = false;
             this.textStatus.WordWrap = false;
+            // 
+            // checkShowDebugLog
+            // 
+            this.checkShowDebugLog.AutoSize = true;
+            this.checkShowDebugLog.Location = new System.Drawing.Point(3, 164);
+            this.checkShowDebugLog.Name = "checkShowDebugLog";
+            this.checkShowDebugLog.Size = new System.Drawing.Size(109, 17);
+            this.checkShowDebugLog.TabIndex = 3;
+            this.checkShowDebugLog.Text = "Show Debug Log";
+            this.checkShowDebugLog.UseVisualStyleBackColor = true;
+            this.checkShowDebugLog.CheckedChanged += new System.EventHandler(this.checkShowDebugLog_CheckedChanged);
             // 
             // OBSEventsSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "OBSEventsSettings";
-            this.Size = new System.Drawing.Size(476, 542);
+            this.Size = new System.Drawing.Size(470, 542);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -294,4 +312,5 @@ partial class OBSEventsSettings
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
     private System.Windows.Forms.CheckBox checkAutoConnect;
     private System.Windows.Forms.Label labelConnectionStatus;
+    private System.Windows.Forms.CheckBox checkShowDebugLog;
 }

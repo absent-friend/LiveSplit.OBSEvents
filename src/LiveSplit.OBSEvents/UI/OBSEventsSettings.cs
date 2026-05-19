@@ -161,4 +161,9 @@ public partial class OBSEventsSettings : UserControl
         string authority = $"{Host}:{Port}";
         CredentialManager.WriteCredential(OBS_CONNECTION_INFO, authority, Password);
     }
+
+    private void checkShowDebugLog_CheckedChanged(object sender, EventArgs e)
+    {
+        textStatus.Visible = checkShowDebugLog.Checked;
+    }
 }
