@@ -25,11 +25,6 @@ public partial class OBSEventsSettings : UserControl
         checkSaveBestSegments.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(SaveBestSegmentReplay), false, DataSourceUpdateMode.OnPropertyChanged);
         textReplayFilename.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayNameFormat), false, DataSourceUpdateMode.OnPropertyChanged);
 
-        textHost.Validating += TextHost_Validating;
-        textPort.Validating += TextPort_Validating;
-
-        AutoValidate = AutoValidate.EnableAllowFocusChange;
-
         Logger.AddErrorConsumer(LogError);
         Logger.AddWarningConsumer(LogWarning);
         Logger.AddInfoConsumer(LogInfo);
@@ -49,6 +44,8 @@ public partial class OBSEventsSettings : UserControl
     public string ReplayNameFormat { get; set; } = "%game-%category-%segment-%time";
 
     internal Client Client { get; private set; } = null;
+
+    private bool HostIsNotSet => Host == null || Host.Trim().Length == 0;
 
     private static string FormatTimestampForLog(DateTime timestamp)
     {
@@ -116,22 +113,6 @@ public partial class OBSEventsSettings : UserControl
         await InitClient();
     }
 
-    private void TextHost_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        if (textHost.Text.Trim().Length == 0)
-        {
-            e.Cancel = true;
-        }
-    }
-
-    private void TextPort_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        if (textPort.Text.Trim().Length == 0)
-        {
-            e.Cancel = true;
-        }
-    }
-
     public async Task InitClient()
     {
         if (Client != null && Client.IsConnected)
@@ -139,9 +120,9 @@ public partial class OBSEventsSettings : UserControl
             return;
         }
 
-        if (!ValidateChildren())
+        if (HostIsNotSet)
         {
-            Logger.Error("Invalid settings. Make sure that you specified a host and a port.");
+            Logger.Error("Invalid connection settings. Make sure that you specified a host.");
             return;
         }
 
@@ -168,6 +149,12 @@ public partial class OBSEventsSettings : UserControl
 
     private void buttonSavePassword_Click(object sender, EventArgs e)
     {
+        if (HostIsNotSet)
+        {
+            Logger.Error("Can't save connection info; you need to specify a host.");
+            return;
+        }
+
         CredentialManager.DeleteCredential(OBS_CONNECTION_INFO);
 
         string authority = $"{Host}:{Port}";
