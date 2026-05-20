@@ -1,6 +1,8 @@
-﻿using LiveSplit.OBSEvents.OBS.Protocol;
+﻿using LiveSplit.Model;
+using LiveSplit.OBSEvents.OBS.Protocol;
 using LiveSplit.OBSEvents.OBS.Protocol.Requests;
 using LiveSplit.OBSEvents.OBS.Protocol.Responses;
+using LiveSplit.OBSEvents.UI;
 using LiveSplit.OBSEvents.Utility;
 using LiveSplit.Web;
 using System;
@@ -22,14 +24,16 @@ namespace LiveSplit.OBSEvents.OBS
         private readonly Mutex _busyLock = new();
         private readonly Uri _uri;
         private readonly string _password;
+        private readonly OBSEventsSettings _settings;
         private readonly byte[] _receiveBuffer = new byte[4096];
         private ClientWebSocket _webSocket;
         private bool _disposed;
 
-        internal Client(string host, int port, string password)
+        internal Client(string host, int port, string password, OBSEventsSettings settings)
         {
             _uri = new Uri($"ws://{host}:{port}");
             _password = password;
+            _settings = settings;
         }
 
         public bool IsConnected => _webSocket != null;
@@ -104,7 +108,7 @@ namespace LiveSplit.OBSEvents.OBS
             }
         }
 
-        public async Task SaveGoldSegmentReplay(string segmentName, TimeSpan segmentTime)
+        public async Task SaveBestSegmentReplay(LiveSplitState state, int splitIndex, TimeSpan segmentTime)
         {
             if (_webSocket == null || !_busyLock.WaitOne(TimeSpan.Zero))
             {
@@ -121,12 +125,10 @@ namespace LiveSplit.OBSEvents.OBS
                     if (response.Results.Count > 1)
                     {
                         GetLastReplayBufferReplayResponse lastReplay = GetLastReplayBufferReplayResponse.Transform(response.Results[1]);
-                        string sanitizedSegmentName = FileUtils.StripInvalidFilenameChars(segmentName);
-                        string goldTime = FileUtils.FormatTimeSpanForFilename(segmentTime);
-                        string newReplayName = $"{sanitizedSegmentName}-{goldTime}";
+                        string newReplayName = ReplayFilenameFormatter.Format(_settings.ReplayNameFormat, state, splitIndex, segmentTime);
                         try
                         {
-                            FileUtils.Rename(lastReplay.SavedReplayPath, newReplayName);
+                            FileOperations.Rename(lastReplay.SavedReplayPath, newReplayName);
                         }
                         catch (Exception e)
                         {

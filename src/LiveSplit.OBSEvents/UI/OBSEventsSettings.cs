@@ -21,6 +21,9 @@ public partial class OBSEventsSettings : UserControl
         textPort.DataBindings.Add(nameof(TextBox.Text), this, nameof(Port), false, DataSourceUpdateMode.OnPropertyChanged);
         textPassword.DataBindings.Add(nameof(TextBox.Text), this, nameof(Password), false, DataSourceUpdateMode.OnPropertyChanged);
         checkAutoConnect.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(ConnectAutomatically), false, DataSourceUpdateMode.OnPropertyChanged);
+        
+        checkSaveBestSegments.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(SaveBestSegmentReplay), false, DataSourceUpdateMode.OnPropertyChanged);
+        textReplayFilename.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayNameFormat), false, DataSourceUpdateMode.OnPropertyChanged);
 
         textHost.Validating += TextHost_Validating;
         textPort.Validating += TextPort_Validating;
@@ -41,9 +44,13 @@ public partial class OBSEventsSettings : UserControl
 
     public bool ConnectAutomatically { get; set; } = true;
 
+    public bool SaveBestSegmentReplay { get; set; } = true;
+
+    public string ReplayNameFormat { get; set; } = "%game-%category-%segment-%time";
+
     internal Client Client { get; private set; } = null;
 
-    private string FormatTimestampForLog(DateTime timestamp)
+    private static string FormatTimestampForLog(DateTime timestamp)
     {
         return timestamp.ToString("G");
     }
@@ -91,12 +98,17 @@ public partial class OBSEventsSettings : UserControl
             Port = int.Parse(authority[1]);
             Password = connectionInfo.Password;
         }
-        ConnectAutomatically = SettingsHelper.ParseBool(element[nameof(ConnectAutomatically)], true);
+        ConnectAutomatically = SettingsHelper.ParseBool(element[nameof(ConnectAutomatically)], ConnectAutomatically);
+
+        SaveBestSegmentReplay = SettingsHelper.ParseBool(element[nameof(SaveBestSegmentReplay)], SaveBestSegmentReplay);
+        ReplayNameFormat = SettingsHelper.ParseString(element[nameof(ReplayNameFormat)], ReplayNameFormat);
     }
 
     private int CreateSettingsNodes(XmlDocument document, XmlElement parent)
     {
-        return SettingsHelper.CreateSetting(document, parent, nameof(ConnectAutomatically), ConnectAutomatically);
+        return SettingsHelper.CreateSetting(document, parent, nameof(ConnectAutomatically), ConnectAutomatically)
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(SaveBestSegmentReplay), SaveBestSegmentReplay)
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayNameFormat), ReplayNameFormat);
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
@@ -137,7 +149,7 @@ public partial class OBSEventsSettings : UserControl
         labelConnectionStatus.Text = "Status: Connecting...";
         Logger.Info("Connecting...");
 
-        Client = new Client(Host, Port, Password);
+        Client = new Client(Host, Port, Password, this);
         try
         {
             await Client.EstablishSession();
@@ -165,5 +177,10 @@ public partial class OBSEventsSettings : UserControl
     private void checkShowDebugLog_CheckedChanged(object sender, EventArgs e)
     {
         textStatus.Visible = checkShowDebugLog.Checked;
+    }
+
+    private void checkSaveBestSegments_CheckedChanged(object sender, EventArgs e)
+    {
+        textReplayFilename.Enabled = checkSaveBestSegments.Checked;
     }
 }
