@@ -41,14 +41,12 @@ public sealed class OBSEventsComponent : LogicComponent
 
         int index = _state.CurrentSplitIndex - 1;
         TimingMethod method = _state.CurrentTimingMethod;
-        
-        bool isGold = LiveSplitStateHelper.CheckBestSegment(_state, index, method);
-        if (isGold)
+        if (_settings.SaveBestSegmentReplay && LiveSplitStateHelper.CheckBestSegment(_state, index, method))
         {
             try
             {
                 TimeSpan segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(_state, index, method).Value;
-                await _settings.Client.SaveGoldSegmentReplay(_state.Run[index].Name, segmentTime);
+                await _settings.Client.SaveBestSegmentReplay(_state, index, segmentTime);
             }
             catch (Exception ex) {
                 Logger.Error(ex.Message);

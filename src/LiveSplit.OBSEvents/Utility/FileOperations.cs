@@ -1,32 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace LiveSplit.OBSEvents.Utility
 {
-    internal class FileUtils
+    internal class FileOperations
     {
         public static string StripInvalidFilenameChars(string name)
         {
             // method for stripping invalid chars found here: https://stackoverflow.com/a/23182807
             return string.Join("_", name.Split(Path.GetInvalidFileNameChars()));
-        }
-
-        public static string FormatTimeSpanForFilename(TimeSpan timeSpan)
-        {
-            string format;
-            if (timeSpan.Hours > 0)
-            {
-                format = "h'h'mm'm'ss's'fff'ms'";
-            }
-            else if (timeSpan.Minutes > 0)
-            {
-                format = "m'm'ss's'fff'ms'";
-            }
-            else
-            {
-                format = "s's'fff'ms'";
-            }
-            return timeSpan.ToString(format);
         }
 
         public static void Rename(string path, string newName)
