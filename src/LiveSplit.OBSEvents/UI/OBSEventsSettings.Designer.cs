@@ -291,7 +291,7 @@ partial class OBSEventsSettings
             this.groupBox2.Size = new System.Drawing.Size(456, 68);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Save Best Segments";
+            this.groupBox2.Text = "Save Best Segment Replays";
             // 
             // tableLayoutPanel5
             // 
