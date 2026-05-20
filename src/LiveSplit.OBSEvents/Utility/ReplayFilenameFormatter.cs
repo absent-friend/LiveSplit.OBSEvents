@@ -23,9 +23,9 @@ namespace LiveSplit.OBSEvents.Utility
                     "splitM" => $"{segmentTime.Minutes:D2}",
                     "splitH" => $"{segmentTime.Hours}",
                     "date" => $"{date:yyyy-MM-dd}",
-                    "day" => $"{date.Day}",
-                    "month" => $"{date.Month}",
-                    "year" => $"{date.Year}",
+                    "day" => $"{date.Day:D2}",
+                    "month" => $"{date.Month:D2}",
+                    "year" => $"{date.Year:D4}",
                     _ => throw new Exception($"Illegal state in {nameof(ReplayFilenameFormatter)}.{nameof(Format)}")
                 }
             );
