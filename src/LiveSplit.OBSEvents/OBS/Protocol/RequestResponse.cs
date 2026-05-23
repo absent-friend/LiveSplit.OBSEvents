@@ -8,7 +8,7 @@
 
         public RequestStatus RequestStatus { get; } = requestStatus;
 
-        protected static dynamic ExtractResponseData(dynamic json)
+        protected static dynamic ExtractAndValidateData(dynamic json)
         {
             return Message.ValidateAndExtractData(json, OPCODE, nameof(RequestResponse));
         }

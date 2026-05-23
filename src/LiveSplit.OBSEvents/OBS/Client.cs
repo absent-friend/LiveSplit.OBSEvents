@@ -1,7 +1,9 @@
 ﻿using LiveSplit.Model;
 using LiveSplit.OBSEvents.OBS.Protocol;
-using LiveSplit.OBSEvents.OBS.Protocol.Requests;
-using LiveSplit.OBSEvents.OBS.Protocol.Responses;
+using LiveSplit.OBSEvents.OBS.Protocol.Requests.Config;
+using LiveSplit.OBSEvents.OBS.Protocol.Requests.Outputs;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses.Config;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses.Outputs;
 using LiveSplit.OBSEvents.UI;
 using LiveSplit.OBSEvents.Utility;
 using LiveSplit.Web;
@@ -117,42 +119,54 @@ namespace LiveSplit.OBSEvents.OBS
             
             try
             {
-                if (_uri.IsLoopback)
+                // first batch: grab initial state of replay buffer settings
+                RequestBatchResponse paramValues = await SendRequestBatch(
+                    new GetReplayBufferStatus(),
+                    new GetProfileParameter("Output", "Mode"),
+                    new GetProfileParameter("Output", "FilenameFormatting"),
+                    new GetProfileParameter("SimpleOutput", "RecRBPrefix"),
+                    new GetProfileParameter("SimpleOutput", "RecRBSuffix"),
+                    new GetProfileParameter("AdvOut", "RecRBPrefix"),
+                    new GetProfileParameter("AdvOut", "RecRBSuffix"));
+
+                GetReplayBufferStatusResponse replayStatus = GetReplayBufferStatusResponse.Transform(paramValues.Results[0]);
+                if (!replayStatus.IsActive.HasValue || !replayStatus.IsActive.Value)
                 {
-                    // batch save + get filename so we can rename the file afterwards.
-                    Message[] requests = [new SaveReplayBuffer(), new GetLastReplayBufferReplay()];
-                    RequestBatchResponse response = await SendRequestBatch(new RequestBatch(requests));
-                    if (response.Results.Count > 1)
-                    {
-                        GetLastReplayBufferReplayResponse lastReplay = GetLastReplayBufferReplayResponse.Transform(response.Results[1]);
-                        string newReplayName = ReplayFilenameFormatter.Format(_settings.ReplayNameFormat, state, splitIndex, segmentTime);
-                        try
-                        {
-                            FileOperations.Rename(lastReplay.SavedReplayPath, newReplayName);
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Warning($"Failed to rename replay file: {e.Message}");
-                        }
-                    } 
-                    else
-                    {
-                        SaveReplayBufferResponse saveReplay = SaveReplayBufferResponse.Transform(response.Results[0]);
-                        Logger.Warning($"Failed to save replay buffer: {saveReplay.RequestStatus.Comment ?? "The replay buffer isn't running."}");
-                    }
+                    Logger.Error("Can't save replay buffer; make that it is enabled and running.");
+                    return;
                 }
-                else
+
+                GetProfileParameterResponse mode = GetProfileParameterResponse.Transform(paramValues.Results[1]);
+                GetProfileParameterResponse filenameFormatting = GetProfileParameterResponse.Transform(paramValues.Results[2]);
+                int prefixIndex = mode.Value == "Simple" ? 3 : 5;
+                GetProfileParameterResponse prefix = GetProfileParameterResponse.Transform(paramValues.Results[prefixIndex]);
+                int suffixIndex = mode.Value == "Simple" ? 4 : 6;
+                GetProfileParameterResponse suffix = GetProfileParameterResponse.Transform(paramValues.Results[suffixIndex]);
+
+                string newReplayName = ReplayFilenameFormatter.Format(_settings.ReplayNameFormat, state, splitIndex, segmentTime);
+                string categoryForMode = mode.Value == "Simple" ? "SimpleOutput" : "AdvOut";
+                // second batch: set the replay filename temporarily and save the replay
+                RequestBatchResponse replaySave = await SendRequestBatch(
+                    new SetProfileParameter("Output", "FilenameFormatting", newReplayName),
+                    new SetProfileParameter(categoryForMode, "RecRBPrefix", ""),
+                    new SetProfileParameter(categoryForMode, "RecRBSuffix", ""),
+                    new SaveReplayBuffer());
+
+                SaveReplayBufferResponse saveResult = SaveReplayBufferResponse.Transform(replaySave.Results[3]);
+                if (!saveResult.RequestStatus.Result)
                 {
-                    // just save the replay. can't rename a file on a remote server without additional dependencies/processes
-                    SaveReplayBufferResponse saveReplay = await SendRequest(new SaveReplayBuffer());
-                    if (!saveReplay.RequestStatus.Result)
-                    {
-                        Logger.Warning($"Failed to save replay buffer: {saveReplay.RequestStatus.Comment ?? "The replay buffer isn't running."}");
-                    }
+                    Logger.Error($"Failed to save replay buffer: {saveResult.RequestStatus.Comment ?? "unknown error"}");
                 }
+
+                // third batch: restore any changed settings to their original values
+                await SendRequestBatch(
+                    new SetProfileParameter("Output", "FilenameFormatting", filenameFormatting.Value),
+                    new SetProfileParameter(categoryForMode, "RecRBPrefix", prefix.Value),
+                    new SetProfileParameter(categoryForMode, "RecRBSuffix", suffix.Value));
             }
-            catch
+            catch (Exception e)
             {
+                Logger.Error($"Unexpected error saving replay. Please file an issue on GitHub. stacktrace:\r\n{e.StackTrace}");
                 _webSocket.Dispose();
                 _webSocket = null;
                 throw;
@@ -169,8 +183,9 @@ namespace LiveSplit.OBSEvents.OBS
             return await ReceiveMessage(request.ResponseParser);
         }
 
-        private async Task<RequestBatchResponse> SendRequestBatch(RequestBatch batch)
+        private async Task<RequestBatchResponse> SendRequestBatch(params Message[] requests)
         {
+            var batch = new RequestBatch(requests);
             await SendMessage(batch);
             return await ReceiveMessage(RequestBatchResponse.Parse);
         }

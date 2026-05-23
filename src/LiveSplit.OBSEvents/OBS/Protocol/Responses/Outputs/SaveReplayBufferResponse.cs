@@ -1,10 +1,10 @@
-﻿namespace LiveSplit.OBSEvents.OBS.Protocol.Responses
+﻿namespace LiveSplit.OBSEvents.OBS.Protocol.Responses.Outputs
 {
     internal class SaveReplayBufferResponse(string requestId, RequestStatus requestStatus) : RequestResponse(requestId, requestStatus)
     {
         public static SaveReplayBufferResponse Parse(dynamic json)
         {
-            dynamic data = ExtractResponseData(json);
+            dynamic data = ExtractAndValidateData(json);
             return Transform(data);
         }
 
