@@ -374,9 +374,9 @@ partial class OBSEventsSettings
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 55);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 3;
-            this.label5.Text = "Delay";
+            this.label5.Text = "Delay (Seconds)";
             // 
             // textReplayDelay
             // 
