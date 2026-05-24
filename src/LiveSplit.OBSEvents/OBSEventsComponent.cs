@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -41,8 +42,15 @@ public sealed class OBSEventsComponent : LogicComponent
             return;
         }
 
+        // getting this before delay in case there's another split during the delay (not all that likely though)
         int index = _state.CurrentSplitIndex - 1;
         TimingMethod method = _state.CurrentTimingMethod;
+
+        if (_settings.ReplayDelay > 0)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(_settings.ReplayDelay));
+        }
+
         if (_settings.SaveBestSegmentReplay && LiveSplitStateHelper.CheckBestSegment(_state, index, method))
         {
             try

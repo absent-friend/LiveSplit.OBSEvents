@@ -25,6 +25,7 @@ public partial class OBSEventsSettings : UserControl
         
         checkSaveBestSegments.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(SaveBestSegmentReplay), false, DataSourceUpdateMode.OnPropertyChanged);
         textReplayFilename.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayNameFormat), false, DataSourceUpdateMode.OnPropertyChanged);
+        textReplayDelay.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayDelay), false, DataSourceUpdateMode.OnPropertyChanged);
 
         Logger.AddErrorConsumer(LogError);
         Logger.AddWarningConsumer(LogWarning);
@@ -43,6 +44,8 @@ public partial class OBSEventsSettings : UserControl
     public bool SaveBestSegmentReplay { get; set; } = true;
 
     public string ReplayNameFormat { get; set; } = "%game-%category-%segment-%time";
+
+    public int ReplayDelay { get; set; } = 0;
 
     internal Client Client { get; private set; } = null;
 
@@ -107,13 +110,15 @@ public partial class OBSEventsSettings : UserControl
 
         SaveBestSegmentReplay = SettingsHelper.ParseBool(element[nameof(SaveBestSegmentReplay)], SaveBestSegmentReplay);
         ReplayNameFormat = SettingsHelper.ParseString(element[nameof(ReplayNameFormat)], ReplayNameFormat);
+        ReplayDelay = SettingsHelper.ParseInt(element[nameof(ReplayDelay)], ReplayDelay);
     }
 
     private int CreateSettingsNodes(XmlDocument document, XmlElement parent)
     {
         return SettingsHelper.CreateSetting(document, parent, nameof(ConnectAutomatically), ConnectAutomatically)
             ^ SettingsHelper.CreateSetting(document, parent, nameof(SaveBestSegmentReplay), SaveBestSegmentReplay)
-            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayNameFormat), ReplayNameFormat);
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayNameFormat), ReplayNameFormat)
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayDelay), ReplayDelay);
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)

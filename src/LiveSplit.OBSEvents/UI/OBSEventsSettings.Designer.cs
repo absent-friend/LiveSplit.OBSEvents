@@ -51,6 +51,8 @@ partial class OBSEventsSettings
             this.label4 = new System.Windows.Forms.Label();
             this.textReplayFilename = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textReplayDelay = new System.Windows.Forms.TextBox();
             this.groupOBSConnection.SuspendLayout();
             this.tableConnectionParams.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -109,11 +111,11 @@ partial class OBSEventsSettings
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(3, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 26);
+            this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Host";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -169,22 +171,22 @@ partial class OBSEventsSettings
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 26);
+            this.label2.Location = new System.Drawing.Point(3, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 26);
+            this.label2.Size = new System.Drawing.Size(26, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Port";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(3, 52);
+            this.label3.Location = new System.Drawing.Point(3, 58);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 26);
+            this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -263,19 +265,19 @@ partial class OBSEventsSettings
             this.textDebugLog.AcceptsReturn = true;
             this.textDebugLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textDebugLog.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textDebugLog.Location = new System.Drawing.Point(3, 279);
+            this.textDebugLog.Location = new System.Drawing.Point(3, 305);
             this.textDebugLog.Multiline = true;
             this.textDebugLog.Name = "textDebugLog";
             this.textDebugLog.ReadOnly = true;
             this.textDebugLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textDebugLog.Size = new System.Drawing.Size(465, 273);
+            this.textDebugLog.Size = new System.Drawing.Size(465, 247);
             this.textDebugLog.TabIndex = 2;
             this.textDebugLog.Visible = false;
             // 
             // checkShowDebugLog
             // 
             this.checkShowDebugLog.AutoSize = true;
-            this.checkShowDebugLog.Location = new System.Drawing.Point(3, 256);
+            this.checkShowDebugLog.Location = new System.Drawing.Point(3, 282);
             this.checkShowDebugLog.Name = "checkShowDebugLog";
             this.checkShowDebugLog.Size = new System.Drawing.Size(109, 17);
             this.checkShowDebugLog.TabIndex = 3;
@@ -290,7 +292,7 @@ partial class OBSEventsSettings
             this.groupSaveBest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSaveBest.Location = new System.Drawing.Point(3, 182);
             this.groupSaveBest.Name = "groupSaveBest";
-            this.groupSaveBest.Size = new System.Drawing.Size(465, 68);
+            this.groupSaveBest.Size = new System.Drawing.Size(465, 94);
             this.groupSaveBest.TabIndex = 4;
             this.groupSaveBest.TabStop = false;
             this.groupSaveBest.Text = "Save Best Segment Replays";
@@ -305,17 +307,21 @@ partial class OBSEventsSettings
             this.tableLayoutPanel5.Controls.Add(this.checkSaveBestSegments, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.label4, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.textReplayFilename, 1, 1);
+            this.tableLayoutPanel5.Controls.Add(this.label5, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.textReplayDelay, 1, 2);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowCount = 3;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(459, 49);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(459, 75);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // checkSaveBestSegments
             // 
+            this.checkSaveBestSegments.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkSaveBestSegments.AutoSize = true;
             this.tableLayoutPanel5.SetColumnSpan(this.checkSaveBestSegments, 2);
             this.checkSaveBestSegments.Location = new System.Drawing.Point(3, 3);
@@ -328,11 +334,11 @@ partial class OBSEventsSettings
             // 
             // label4
             // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(3, 23);
+            this.label4.Location = new System.Drawing.Point(3, 29);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(85, 26);
+            this.label4.Size = new System.Drawing.Size(85, 13);
             this.label4.TabIndex = 1;
             this.label4.Text = "Replay Filename";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -361,6 +367,24 @@ partial class OBSEventsSettings
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(459, 35);
             this.tableLayoutPanel1.TabIndex = 5;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 55);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Delay (Seconds)";
+            // 
+            // textReplayDelay
+            // 
+            this.textReplayDelay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textReplayDelay.Location = new System.Drawing.Point(94, 52);
+            this.textReplayDelay.Name = "textReplayDelay";
+            this.textReplayDelay.Size = new System.Drawing.Size(362, 20);
+            this.textReplayDelay.TabIndex = 4;
             // 
             // OBSEventsSettings
             // 
@@ -414,4 +438,6 @@ partial class OBSEventsSettings
     private System.Windows.Forms.TextBox textReplayFilename;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     private System.Windows.Forms.TextBox textDebugLog;
+    private System.Windows.Forms.Label label5;
+    private System.Windows.Forms.TextBox textReplayDelay;
 }
