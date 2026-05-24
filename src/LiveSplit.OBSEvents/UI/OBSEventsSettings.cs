@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -47,6 +48,10 @@ public partial class OBSEventsSettings : UserControl
 
     private bool HostIsNotSet => Host == null || Host.Trim().Length == 0;
 
+    private CancellationTokenSource _autoConnectCancel = null;
+
+    private bool IsAutoConnecting => _autoConnectCancel != null;
+
     private static string FormatTimestampForLog(DateTime timestamp)
     {
         return timestamp.ToString("G");
@@ -54,20 +59,23 @@ public partial class OBSEventsSettings : UserControl
 
     private void LogError(string error)
     {
-        string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[ERROR {timestamp}]\r\n{error}\r\n\r\n";
+        LogMessage("ERROR", error);
     }
 
     private void LogWarning(string warning)
     {
-        string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[WARNING {timestamp}]\r\n{warning}\r\n\r\n";
+        LogMessage("WARNING", warning);
     }
 
     private void LogInfo(string info)
     {
+        LogMessage("INFO", info);
+    }
+
+    private void LogMessage(string type, string message)
+    {
         string timestamp = FormatTimestampForLog(DateTime.Now);
-        textStatus.Text += $"[INFO {timestamp}]\r\n{info}\r\n\r\n";
+        textDebugLog.AppendText($"[{type} {timestamp}]\r\n{message}\r\n\r\n");
     }
 
     public XmlNode GetSettings(XmlDocument document)
@@ -110,23 +118,91 @@ public partial class OBSEventsSettings : UserControl
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
     {
-        await InitClient();
+        if (IsAutoConnecting)
+        {
+            CancelAutoConnect();
+        }
+        else if (Client != null)
+        {
+            Disconnect();
+        }
+        else
+        {
+            await Connect();
+        }
     }
 
-    public async Task InitClient()
+    private void Disconnect()
     {
-        if (Client != null && Client.IsConnected)
+        Logger.Info("Disconnecting.");
+        Client.Dispose();
+        Client = null;
+        buttonConnectToObs.Text = "Connect to OBS";
+    }
+
+    public async Task AutoConnect()
+    {
+        if (Client != null || IsAutoConnecting)
         {
             return;
         }
 
+        int attempts = 0;
+        _autoConnectCancel = new();
+        labelConnectionStatus.Text = "Status: Auto-connecting...";
+        buttonConnectToObs.Text = "Cancel Auto-Connect";
+        while (Client == null)
+        {
+            if (_autoConnectCancel.IsCancellationRequested)
+            {
+                break;
+            }
+            Logger.Info($"Auto-connecting (attempt {++attempts})");
+            await InitClient();
+            if (Client == null)
+            {
+                try
+                {
+                    Logger.Info("Retrying in 10 seconds...");
+                    await Task.Delay(TimeSpan.FromSeconds(10), _autoConnectCancel.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    Logger.Info("Auto-connect cancelled.");
+                    break;
+                }
+            }
+        }
+        if (Client == null)
+        {
+            labelConnectionStatus.Text = "Status: Not connected.";
+            buttonConnectToObs.Text = "Connect to OBS";
+        }
+        _autoConnectCancel = null;
+    }
+
+    private void CancelAutoConnect()
+    {
+        buttonConnectToObs.Text = "Cancelling...";
+        _autoConnectCancel.Cancel();
+    }
+
+    private async Task Connect()
+    {
+        buttonConnectToObs.Enabled = false;
+        await InitClient();
+        buttonConnectToObs.Enabled = true;
+    }
+
+    private async Task InitClient()
+    {
         if (HostIsNotSet)
         {
             Logger.Error("Invalid connection settings. Make sure that you specified a host.");
             return;
         }
 
-        Enabled = false;
+        SetEnabledForConnect(false);
         labelConnectionStatus.Text = "Status: Connecting...";
         Logger.Info("Connecting...");
 
@@ -135,16 +211,23 @@ public partial class OBSEventsSettings : UserControl
         {
             await Client.EstablishSession();
             labelConnectionStatus.Text = "Status: Connected.";
+            buttonConnectToObs.Text = "Disconnect";
             Logger.Info("Connected to OBS.");
         }
         catch (Exception ex)
         {
             Client = null;
             labelConnectionStatus.Text = "Status: Failed to connect.";
-            Logger.Error(ex.Message);
+            Logger.Error($"Failed to connect. {ex.Message}");
         }
 
-        Enabled = true;
+        SetEnabledForConnect(true);
+    }
+
+    private void SetEnabledForConnect(bool value)
+    {
+        groupOBSConnection.Enabled = value;
+        groupSaveBest.Enabled = value;
     }
 
     private void buttonSavePassword_Click(object sender, EventArgs e)
@@ -163,7 +246,7 @@ public partial class OBSEventsSettings : UserControl
 
     private void checkShowDebugLog_CheckedChanged(object sender, EventArgs e)
     {
-        textStatus.Visible = checkShowDebugLog.Checked;
+        textDebugLog.Visible = checkShowDebugLog.Checked;
     }
 
     private void checkSaveBestSegments_CheckedChanged(object sender, EventArgs e)

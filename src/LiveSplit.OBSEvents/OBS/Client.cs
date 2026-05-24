@@ -82,13 +82,7 @@ namespace LiveSplit.OBSEvents.OBS
                 await SendMessage(identify);
                 // if we get an Identified message, we've successfully established a connection.
                 await ReceiveMessage(Identified.Parse);
-
-                // start the replay buffer if it isn't already started.
-                StartReplayBufferResponse startBuffer = await SendRequest(new StartReplayBuffer());
-                if (!startBuffer.RequestStatus.Result && startBuffer.RequestStatus.Code != REQUEST_STATUS_OUTPUT_RUNNING)
-                {
-                    throw new ClientException($"Failed to start the replay buffer: {startBuffer.RequestStatus.Comment}");
-                }
+                await RunStartupTasks();
             }
             catch (ClientException)
             {
@@ -105,6 +99,19 @@ namespace LiveSplit.OBSEvents.OBS
             finally
             {
                 _busyLock.ReleaseMutex();
+            }
+        }
+
+        private async Task RunStartupTasks()
+        {
+            if (_settings.SaveBestSegmentReplay)
+            {
+                // start the replay buffer if it isn't already started.
+                StartReplayBufferResponse startBuffer = await SendRequest(new StartReplayBuffer());
+                if (!startBuffer.RequestStatus.Result && startBuffer.RequestStatus.Code != REQUEST_STATUS_OUTPUT_RUNNING)
+                {
+                    Logger.Error($"Failed to start the replay buffer: {startBuffer.RequestStatus.Comment}");
+                }
             }
         }
 

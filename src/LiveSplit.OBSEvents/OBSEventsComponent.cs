@@ -15,20 +15,22 @@ public sealed class OBSEventsComponent : LogicComponent
     private readonly LiveSplitState _state;
     private readonly OBSEventsSettings _settings;
 
+    private event EventHandler SettingsLoaded;
+
     public OBSEventsComponent(LiveSplitState state)
     {
         _state = state;
         _settings = new();
 
-        _state.OnStart += _state_OnStart;
         _state.OnSplit += _state_OnSplit;
+        SettingsLoaded += OnSettingsLoaded;
     }
 
-    private async void _state_OnStart(object sender, EventArgs e)
+    private async void OnSettingsLoaded(object sender, EventArgs e)
     {
         if (_settings.ConnectAutomatically)
         {
-            await _settings.InitClient();
+            await _settings.AutoConnect();
         }
     }
 
@@ -73,6 +75,7 @@ public sealed class OBSEventsComponent : LogicComponent
     public override void SetSettings(XmlNode settings)
     {
         _settings.SetSettings(settings);
+        SettingsLoaded.Invoke(this, null);
     }
 
     public override Control GetSettingsControl(LayoutMode mode)
