@@ -5,11 +5,9 @@ namespace LiveSplit.OBSEvents.Utility
 {
     internal class Logger
     {
-        private readonly static Action<string> EMPTY_CONSUMER = _ => { };
-
-        private static Action<string> sendToErrorConsumers = EMPTY_CONSUMER;
-        private static Action<string> sendToWarningConsumers = EMPTY_CONSUMER;
-        private static Action<string> sendToInfoConsumers = EMPTY_CONSUMER;
+        private static Action<string> sendToErrorConsumers;
+        private static Action<string> sendToWarningConsumers;
+        private static Action<string> sendToInfoConsumers;
 
         private static string AddComponentPrefix(string message)
         {
@@ -18,38 +16,17 @@ namespace LiveSplit.OBSEvents.Utility
 
         public static void AddErrorConsumer(Action<string> consumer)
         {
-            if (consumer == EMPTY_CONSUMER)
-            {
-                sendToErrorConsumers = consumer;
-            }
-            else
-            {
-                sendToErrorConsumers += consumer;
-            }
+            sendToErrorConsumers += consumer;
         }
 
         public static void AddWarningConsumer(Action<string> consumer)
         {
-            if (consumer == EMPTY_CONSUMER)
-            {
-                sendToWarningConsumers = consumer;
-            }
-            else
-            {
-                sendToWarningConsumers += consumer;
-            }
+            sendToWarningConsumers += consumer;
         }
 
         public static void AddInfoConsumer(Action<string> consumer)
         {
-            if (consumer == EMPTY_CONSUMER)
-            {
-                sendToInfoConsumers = consumer;
-            }
-            else
-            {
-                sendToInfoConsumers += consumer;
-            }
+            sendToInfoConsumers += consumer;
         }
 
         public static void Error(string message)
