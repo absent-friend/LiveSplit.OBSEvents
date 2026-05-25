@@ -1,8 +1,7 @@
 ﻿using System;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses.Outputs;
 
-using LiveSplit.OBSEvents.OBS.Protocol.Responses;
-
-namespace LiveSplit.OBSEvents.OBS.Protocol.Requests
+namespace LiveSplit.OBSEvents.OBS.Protocol.Requests.Outputs
 {
     internal class SaveReplayBuffer : Request<SaveReplayBufferResponse>
     {

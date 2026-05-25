@@ -6,7 +6,7 @@ using LiveSplit.Web;
 
 namespace LiveSplit.OBSEvents.OBS.Protocol
 {
-    internal class RequestBatch(Message[] requests) : Message
+    internal class RequestBatch(IEnumerable<Message> requests) : Message
     {
         private const int OPCODE = 8;
 
@@ -14,7 +14,7 @@ namespace LiveSplit.OBSEvents.OBS.Protocol
 
         private string RequestId { get; } = Guid.NewGuid().ToString();
 
-        private Message[] Requests { get; } = requests;
+        private IEnumerable<Message> Requests { get; } = requests;
 
         internal override IDictionary<string, object> FieldValues()
         {

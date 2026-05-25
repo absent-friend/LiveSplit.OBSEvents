@@ -1,11 +1,12 @@
 ﻿using LiveSplit.Model;
 using LiveSplit.OBSEvents.OBS.Protocol;
-using LiveSplit.OBSEvents.OBS.Protocol.Requests;
-using LiveSplit.OBSEvents.OBS.Protocol.Responses;
+using LiveSplit.OBSEvents.OBS.Protocol.Requests.Outputs;
+using LiveSplit.OBSEvents.OBS.Protocol.Responses.Outputs;
 using LiveSplit.OBSEvents.UI;
 using LiveSplit.OBSEvents.Utility;
 using LiveSplit.Web;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.WebSockets;
 using System.Security.Cryptography;
@@ -104,13 +105,21 @@ namespace LiveSplit.OBSEvents.OBS
 
         private async Task RunStartupTasks()
         {
+            IList<Message> requests = [];
             if (_settings.SaveBestSegmentReplay)
             {
-                // start the replay buffer if it isn't already started.
-                StartReplayBufferResponse startBuffer = await SendRequest(new StartReplayBuffer());
+                requests.Add(new StartReplayBuffer());
+            }
+
+            RequestBatchResponse taskResults = await SendRequestBatch(new RequestBatch(requests));
+            int i = 0;
+            if (_settings.SaveBestSegmentReplay)
+            {
+                StartReplayBufferResponse startBuffer = StartReplayBufferResponse.Transform(taskResults.Results[i++]);
                 if (!startBuffer.RequestStatus.Result && startBuffer.RequestStatus.Code != REQUEST_STATUS_OUTPUT_RUNNING)
                 {
                     Logger.Error($"Failed to start the replay buffer: {startBuffer.RequestStatus.Comment}");
+                    return;
                 }
             }
         }
@@ -132,14 +141,23 @@ namespace LiveSplit.OBSEvents.OBS
                     if (response.Results.Count > 1)
                     {
                         GetLastReplayBufferReplayResponse lastReplay = GetLastReplayBufferReplayResponse.Transform(response.Results[1]);
+                        
+                        while (!File.Exists(lastReplay.SavedReplayPath))
+                        {
+                            // The first saved replay takes extra time to show up for some reason.
+                            // Timestamps might not line up either. Need to keep asking until we get a match
+                            await Task.Delay(TimeSpan.FromSeconds(1));
+                            lastReplay = await SendRequest(new GetLastReplayBufferReplay());
+                        }
+                        
                         string newReplayName = ReplayFilenameFormatter.Format(_settings.ReplayNameFormat, state, splitIndex, segmentTime);
                         try
                         {
                             FileOperations.Rename(lastReplay.SavedReplayPath, newReplayName);
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            Logger.Warning($"Failed to rename replay file: {e.Message}");
+                            Logger.Warning($"Failed to rename replay file: {ex.Message}");
                         }
                     } 
                     else
