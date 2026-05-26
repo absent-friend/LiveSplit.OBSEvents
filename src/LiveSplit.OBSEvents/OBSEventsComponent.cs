@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -15,6 +16,7 @@ public sealed class OBSEventsComponent : LogicComponent
 {
     private readonly LiveSplitState _state;
     private readonly OBSEventsSettings _settings;
+    private readonly Barrier _autoConnectBarrier = new(2);
 
     private event EventHandler SettingsLoaded;
 
@@ -25,14 +27,22 @@ public sealed class OBSEventsComponent : LogicComponent
 
         _state.OnSplit += _state_OnSplit;
         SettingsLoaded += OnSettingsLoaded;
+        AutoConnect();
     }
 
-    private async void OnSettingsLoaded(object sender, EventArgs e)
+    private async void AutoConnect()
     {
+        await Task.Run(() => _autoConnectBarrier.SignalAndWait());
         if (_settings.ConnectAutomatically)
         {
             await _settings.AutoConnect();
         }
+    }
+
+    private void OnSettingsLoaded(object sender, EventArgs e)
+    {
+        _autoConnectBarrier.SignalAndWait();
+        SettingsLoaded -= OnSettingsLoaded;
     }
 
     private async void _state_OnSplit(object sender, EventArgs e)
@@ -83,7 +93,7 @@ public sealed class OBSEventsComponent : LogicComponent
     public override void SetSettings(XmlNode settings)
     {
         _settings.SetSettings(settings);
-        SettingsLoaded.Invoke(this, null);
+        SettingsLoaded?.Invoke(this, null);
     }
 
     public override Control GetSettingsControl(LayoutMode mode)
