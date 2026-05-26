@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -16,7 +15,6 @@ public sealed class OBSEventsComponent : LogicComponent
 {
     private readonly LiveSplitState _state;
     private readonly OBSEventsSettings _settings;
-    private readonly Barrier _autoConnectBarrier = new(2);
 
     private event EventHandler SettingsLoaded;
 
@@ -26,23 +24,16 @@ public sealed class OBSEventsComponent : LogicComponent
         _settings = new();
 
         _state.OnSplit += _state_OnSplit;
-        SettingsLoaded += OnSettingsLoaded;
-        AutoConnect();
+        SettingsLoaded += OnComponentInitialized;
     }
 
-    private async void AutoConnect()
+    private async void OnComponentInitialized(object sender, EventArgs e)
     {
-        await Task.Run(() => _autoConnectBarrier.SignalAndWait());
         if (_settings.ConnectAutomatically)
         {
             await _settings.AutoConnect();
         }
-    }
-
-    private void OnSettingsLoaded(object sender, EventArgs e)
-    {
-        _autoConnectBarrier.SignalAndWait();
-        SettingsLoaded -= OnSettingsLoaded;
+        SettingsLoaded -= OnComponentInitialized;
     }
 
     private async void _state_OnSplit(object sender, EventArgs e)

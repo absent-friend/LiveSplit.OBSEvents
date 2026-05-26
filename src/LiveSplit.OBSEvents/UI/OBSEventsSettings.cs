@@ -143,6 +143,7 @@ public partial class OBSEventsSettings : UserControl
         Client.Dispose();
         Client = null;
         buttonConnectToObs.Text = "Connect to OBS";
+        labelConnectionStatus.Text = "Status: Not connected.";
     }
 
     public async Task AutoConnect()
