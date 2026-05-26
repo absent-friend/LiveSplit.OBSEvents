@@ -50,9 +50,9 @@ partial class OBSEventsSettings
             this.checkSaveBestSegments = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textReplayFilename = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.textReplayDelay = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupOBSConnection.SuspendLayout();
             this.tableConnectionParams.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -143,11 +143,11 @@ partial class OBSEventsSettings
             // 
             this.checkAutoConnect.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checkAutoConnect.AutoSize = true;
-            this.checkAutoConnect.Location = new System.Drawing.Point(278, 9);
+            this.checkAutoConnect.Location = new System.Drawing.Point(262, 9);
             this.checkAutoConnect.Name = "checkAutoConnect";
-            this.checkAutoConnect.Size = new System.Drawing.Size(131, 17);
+            this.checkAutoConnect.Size = new System.Drawing.Size(164, 17);
             this.checkAutoConnect.TabIndex = 0;
-            this.checkAutoConnect.Text = "Connect Automatically";
+            this.checkAutoConnect.Text = "Auto-Connect During Launch";
             this.checkAutoConnect.UseVisualStyleBackColor = true;
             // 
             // buttonSavePassword
@@ -351,23 +351,6 @@ partial class OBSEventsSettings
             this.textReplayFilename.Size = new System.Drawing.Size(362, 20);
             this.textReplayFilename.TabIndex = 2;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.buttonConnectToObs, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelConnectionStatus, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 141);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(459, 35);
-            this.tableLayoutPanel1.TabIndex = 5;
-            // 
             // label5
             // 
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -385,6 +368,23 @@ partial class OBSEventsSettings
             this.textReplayDelay.Name = "textReplayDelay";
             this.textReplayDelay.Size = new System.Drawing.Size(362, 20);
             this.textReplayDelay.TabIndex = 4;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.buttonConnectToObs, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelConnectionStatus, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 141);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(459, 35);
+            this.tableLayoutPanel1.TabIndex = 5;
             // 
             // OBSEventsSettings
             // 
