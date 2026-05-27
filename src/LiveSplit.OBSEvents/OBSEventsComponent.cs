@@ -79,6 +79,12 @@ public sealed class OBSEventsComponent : LogicComponent
             segmentTime = split - prevSplit;
         }
 
+        if (!segmentTime.HasValue)
+        {
+            // only save replays for golds that span a single named segment.
+            return false;
+        }
+
         TimeSpan? bestSegment = state.Run[index].BestSegmentTime[method];
         TimeSpan? diffToBest = segmentTime - bestSegment;
         TimeSpan? threshold = TimeSpan.FromSeconds(_settings.ReplayThreshold);
