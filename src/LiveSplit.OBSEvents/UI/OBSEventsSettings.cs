@@ -18,14 +18,15 @@ public partial class OBSEventsSettings : UserControl
     {
         InitializeComponent();
 
-        textHost.DataBindings.Add(nameof(TextBox.Text), this, nameof(Host), false, DataSourceUpdateMode.OnPropertyChanged);
-        textPort.DataBindings.Add(nameof(TextBox.Text), this, nameof(Port), false, DataSourceUpdateMode.OnPropertyChanged);
-        textPassword.DataBindings.Add(nameof(TextBox.Text), this, nameof(Password), false, DataSourceUpdateMode.OnPropertyChanged);
+        textHost.DataBindings.Add(nameof(TextBox.Text), this, nameof(Host), false, DataSourceUpdateMode.OnValidation);
+        textPort.DataBindings.Add(nameof(TextBox.Text), this, nameof(Port), false, DataSourceUpdateMode.OnValidation);
+        textPassword.DataBindings.Add(nameof(TextBox.Text), this, nameof(Password), false, DataSourceUpdateMode.OnValidation);
         checkAutoConnect.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(ConnectAutomatically), false, DataSourceUpdateMode.OnPropertyChanged);
         
         checkSaveBestSegments.DataBindings.Add(nameof(CheckBox.Checked), this, nameof(SaveBestSegmentReplay), false, DataSourceUpdateMode.OnPropertyChanged);
-        textReplayFilename.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayNameFormat), false, DataSourceUpdateMode.OnPropertyChanged);
-        textReplayDelay.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayDelay), false, DataSourceUpdateMode.OnPropertyChanged);
+        textReplayFilename.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayNameFormat), false, DataSourceUpdateMode.OnValidation);
+        textReplayDelay.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayDelay), false, DataSourceUpdateMode.OnValidation);
+        textReplayThreshold.DataBindings.Add(nameof(TextBox.Text), this, nameof(ReplayThreshold), false, DataSourceUpdateMode.OnValidation);
 
         Logger.AddErrorConsumer(LogError);
         Logger.AddWarningConsumer(LogWarning);
@@ -45,7 +46,9 @@ public partial class OBSEventsSettings : UserControl
 
     public string ReplayNameFormat { get; set; } = "%game-%category-%segment-%time";
 
-    public int ReplayDelay { get; set; } = 0;
+    public double ReplayDelay { get; set; } = 0;
+
+    public double ReplayThreshold { get; set; } = 0;
 
     internal Client Client { get; private set; } = null;
 
@@ -110,7 +113,8 @@ public partial class OBSEventsSettings : UserControl
 
         SaveBestSegmentReplay = SettingsHelper.ParseBool(element[nameof(SaveBestSegmentReplay)], SaveBestSegmentReplay);
         ReplayNameFormat = SettingsHelper.ParseString(element[nameof(ReplayNameFormat)], ReplayNameFormat);
-        ReplayDelay = SettingsHelper.ParseInt(element[nameof(ReplayDelay)], ReplayDelay);
+        ReplayDelay = SettingsHelper.ParseDouble(element[nameof(ReplayDelay)], ReplayDelay);
+        ReplayThreshold = SettingsHelper.ParseDouble(element[nameof(ReplayThreshold)], ReplayThreshold);
     }
 
     private int CreateSettingsNodes(XmlDocument document, XmlElement parent)
@@ -118,7 +122,8 @@ public partial class OBSEventsSettings : UserControl
         return SettingsHelper.CreateSetting(document, parent, nameof(ConnectAutomatically), ConnectAutomatically)
             ^ SettingsHelper.CreateSetting(document, parent, nameof(SaveBestSegmentReplay), SaveBestSegmentReplay)
             ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayNameFormat), ReplayNameFormat)
-            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayDelay), ReplayDelay);
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayDelay), ReplayDelay)
+            ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayThreshold), ReplayThreshold);
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
