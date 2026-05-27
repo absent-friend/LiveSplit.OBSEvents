@@ -52,9 +52,9 @@ partial class OBSEventsSettings
             this.textReplayFilename = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textReplayDelay = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.textReplayThreshold = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupOBSConnection.SuspendLayout();
             this.tableConnectionParams.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -305,7 +305,7 @@ partial class OBSEventsSettings
             this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 368F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.checkSaveBestSegments, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.label4, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.textReplayFilename, 1, 1);
@@ -321,6 +321,7 @@ partial class OBSEventsSettings
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(459, 101);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
@@ -353,7 +354,7 @@ partial class OBSEventsSettings
             this.textReplayFilename.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textReplayFilename.Location = new System.Drawing.Point(114, 26);
             this.textReplayFilename.Name = "textReplayFilename";
-            this.textReplayFilename.Size = new System.Drawing.Size(362, 20);
+            this.textReplayFilename.Size = new System.Drawing.Size(342, 20);
             this.textReplayFilename.TabIndex = 2;
             // 
             // label5
@@ -371,8 +372,26 @@ partial class OBSEventsSettings
             this.textReplayDelay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textReplayDelay.Location = new System.Drawing.Point(114, 52);
             this.textReplayDelay.Name = "textReplayDelay";
-            this.textReplayDelay.Size = new System.Drawing.Size(362, 20);
+            this.textReplayDelay.Size = new System.Drawing.Size(342, 20);
             this.textReplayDelay.TabIndex = 4;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 81);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(105, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Threshold (Seconds)";
+            // 
+            // textReplayThreshold
+            // 
+            this.textReplayThreshold.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textReplayThreshold.Location = new System.Drawing.Point(114, 78);
+            this.textReplayThreshold.Name = "textReplayThreshold";
+            this.textReplayThreshold.Size = new System.Drawing.Size(342, 20);
+            this.textReplayThreshold.TabIndex = 6;
             // 
             // tableLayoutPanel1
             // 
@@ -390,24 +409,6 @@ partial class OBSEventsSettings
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(459, 35);
             this.tableLayoutPanel1.TabIndex = 5;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 81);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(105, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Threshold (Seconds)";
-            // 
-            // textReplayThreshold
-            // 
-            this.textReplayThreshold.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textReplayThreshold.Location = new System.Drawing.Point(114, 78);
-            this.textReplayThreshold.Name = "textReplayThreshold";
-            this.textReplayThreshold.Size = new System.Drawing.Size(362, 20);
-            this.textReplayThreshold.TabIndex = 6;
             // 
             // OBSEventsSettings
             // 

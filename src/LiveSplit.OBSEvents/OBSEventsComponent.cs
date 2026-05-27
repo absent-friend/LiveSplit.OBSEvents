@@ -67,27 +67,21 @@ public sealed class OBSEventsComponent : LogicComponent
 
     private bool IsBestSegment(LiveSplitState state, int index, TimingMethod method)
     {
-        // mostly copied from LiveSplitStateHelper.CheckBestSegment
-
-        TimeSpan? split = state.Run[index].SplitTime[method];
-        if (!split.HasValue)
-        {
-            return false;
-        }
-
         TimeSpan? segmentTime;
         if (index == 0)
         {
-            segmentTime = split;
+            segmentTime = state.Run[index].SplitTime[method];
         }
         else
         {
+            TimeSpan? split = state.Run[index].SplitTime[method];
             TimeSpan? prevSplit = state.Run[index - 1].SplitTime[method];
             segmentTime = split - prevSplit;
         }
 
         if (!segmentTime.HasValue)
         {
+            // only save replays for golds that span a single named segment.
             return false;
         }
 
