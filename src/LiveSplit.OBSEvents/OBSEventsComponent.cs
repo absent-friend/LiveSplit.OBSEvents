@@ -1,13 +1,13 @@
-using System;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
-
 using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
 using LiveSplit.OBSEvents.UI;
 using LiveSplit.OBSEvents.Utility;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace LiveSplit.OBSEvents;
 
@@ -52,7 +52,7 @@ public sealed class OBSEventsComponent : LogicComponent
             await Task.Delay(TimeSpan.FromSeconds(_settings.ReplayDelay));
         }
 
-        if (_settings.SaveBestSegmentReplay && LiveSplitStateHelper.CheckBestSegment(_state, index, method))
+        if (_settings.SaveBestSegmentReplay && IsBestSegment(_state, index, method))
         {
             try
             {
@@ -63,6 +63,23 @@ public sealed class OBSEventsComponent : LogicComponent
                 Logger.Error(ex.Message);
             }
         }
+    }
+
+    private bool IsBestSegment(LiveSplitState state, int index, TimingMethod method)
+    {
+        // mostly copied from LiveSplitStateHelper.CheckBestSegment
+
+        if (state.Run[index].SplitTime[method] == null)
+        {
+            return false;
+        }
+
+        TimeSpan? delta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, index, BestSegmentsComparisonGenerator.ComparisonName, method);
+        TimeSpan? curSegment = LiveSplitStateHelper.GetPreviousSegmentTime(state, index, method);
+        TimeSpan? bestSegment = state.Run[index].BestSegmentTime[method];
+        TimeSpan? diffToBest = curSegment - bestSegment;
+        TimeSpan? threshold = TimeSpan.FromSeconds(_settings.ReplayThreshold);
+        return bestSegment == null || diffToBest < threshold || delta < TimeSpan.Zero;
     }
 
     public const string Name = "OBS Events";
