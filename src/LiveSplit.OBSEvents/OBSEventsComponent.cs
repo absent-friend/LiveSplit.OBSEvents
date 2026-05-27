@@ -69,17 +69,32 @@ public sealed class OBSEventsComponent : LogicComponent
     {
         // mostly copied from LiveSplitStateHelper.CheckBestSegment
 
-        if (state.Run[index].SplitTime[method] == null)
+        TimeSpan? split = state.Run[index].SplitTime[method];
+        if (!split.HasValue)
         {
             return false;
         }
 
-        TimeSpan? delta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, index, BestSegmentsComparisonGenerator.ComparisonName, method);
-        TimeSpan? curSegment = LiveSplitStateHelper.GetPreviousSegmentTime(state, index, method);
+        TimeSpan? segmentTime;
+        if (index == 0)
+        {
+            segmentTime = split;
+        }
+        else
+        {
+            TimeSpan? prevSplit = state.Run[index - 1].SplitTime[method];
+            segmentTime = split - prevSplit;
+        }
+
+        if (!segmentTime.HasValue)
+        {
+            return false;
+        }
+
         TimeSpan? bestSegment = state.Run[index].BestSegmentTime[method];
-        TimeSpan? diffToBest = curSegment - bestSegment;
+        TimeSpan? diffToBest = segmentTime - bestSegment;
         TimeSpan? threshold = TimeSpan.FromSeconds(_settings.ReplayThreshold);
-        return bestSegment == null || diffToBest < threshold || delta < TimeSpan.Zero;
+        return bestSegment == null || diffToBest < threshold;
     }
 
     public const string Name = "OBS Events";
