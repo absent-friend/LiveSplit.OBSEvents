@@ -108,6 +108,10 @@ namespace LiveSplit.OBSEvents.OBS
             IList<Message> requests = [];
             if (_settings.SaveBestSegmentReplay)
             {
+                if (_settings.BufferLength is int bufferLength)
+                {
+
+                }
                 requests.Add(new StartReplayBuffer());
             }
 

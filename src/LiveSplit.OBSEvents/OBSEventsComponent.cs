@@ -13,7 +13,7 @@ namespace LiveSplit.OBSEvents;
 
 public sealed class OBSEventsComponent : LogicComponent
 {
-    private readonly LiveSplitState _state;
+    private LiveSplitState _state;
     private readonly OBSEventsSettings _settings;
 
     private event EventHandler SettingsLoaded;
@@ -95,7 +95,12 @@ public sealed class OBSEventsComponent : LogicComponent
 
     public override string ComponentName => Name;
 
-    public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {}
+    public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
+        if (state != _state)
+        {
+            _state = state;
+        }
+    }
 
     public override XmlNode GetSettings(XmlDocument document)
     {

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using LiveSplit.Model;
 using LiveSplit.OBSEvents.OBS;
 using LiveSplit.OBSEvents.Utility;
 using LiveSplit.UI;
@@ -49,6 +52,8 @@ public partial class OBSEventsSettings : UserControl
     public double ReplayDelay { get; set; } = 0;
 
     public double ReplayThreshold { get; set; } = 0;
+
+    internal int? BufferLength { get; private set; }
 
     internal Client Client { get; private set; } = null;
 
@@ -124,6 +129,13 @@ public partial class OBSEventsSettings : UserControl
             ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayNameFormat), ReplayNameFormat)
             ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayDelay), ReplayDelay)
             ^ SettingsHelper.CreateSetting(document, parent, nameof(ReplayThreshold), ReplayThreshold);
+    }
+
+    public void SetBufferLength(LiveSplitState state)
+    {
+        BufferLength = state.Run.Select(segment => segment.BestSegmentTime[state.CurrentTimingMethod]?.TotalSeconds)
+            .Cast<int?>()
+            .Max();
     }
 
     private async void buttonConnectToObs_Click(object sender, EventArgs e)
