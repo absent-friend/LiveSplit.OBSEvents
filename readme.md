@@ -2,15 +2,13 @@
 
 This component watches for certain events during a run and sends commands to OBS when those events occur.
 
-For the moment, it only does the following:
-- When you start a run, it tells OBS to start the replay buffer.
-- When you get a best segment, it tells OBS to save the replay buffer.
-  - It also renames the file to `<segment_name>-<segment_time>.(mkv|mp4)` if OBS is running locally.
-  - e.g. a 3:21.234 time in "Sunny Villa" becomes `Sunny Villa-3m21s234ms.mkv` (if you use `.mkv`)
+For the moment, its main function is to save the replay buffer when you get a new best segment.
  
 Planned additions:
-- Per-game configuration of the replay buffer length.
+- Automatically set the replay buffer duration to fit the longest segment in the run.
+- Automatically start recording when you open LiveSplit.
 - Chapter markers after a run starts/ends and after every split. (Will require use of the Hybrid MP4/MOV format.)
+- More generic event configuration (e.g. show source for X seconds after Y event)
 
 ## Building
 
