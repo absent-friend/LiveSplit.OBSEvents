@@ -21,4 +21,21 @@
         </changelog>
     </update>
 
+	<update version="1.1.0">
+		<files>
+			<file path="/v1.1.0/LiveSplit.OBSEvents.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>A link to the settings guide has been added to the top of the settings editor.</change>
+			<change>You can now configure the filename for best segment replays.</change>
+			<change>You can now add a delay before best segment replays are saved.</change>
+			<change>You can now save replays for segments that are within a specified distance of the corresponding best segment.</change>
+			<change>If you have auto-connect enabled, it will now start connecting as soon as LiveSplit loads the component settings.</change>
+			<change>Connection settings will no longer be flagged as invalid before the component settings editor is opened.</change>
+			<change>Replay files should no longer fail to rename on occasion.</change>
+			<change>Replays will only be saved for best segments that span a single named segment.</change>
+			<change>The debug log is now hidden by default. A checkbox is available to show it.</change>
+		</changelog>
+	</update>
+
 </updates>
