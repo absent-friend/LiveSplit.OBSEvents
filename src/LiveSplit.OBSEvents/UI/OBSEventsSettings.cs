@@ -264,4 +264,9 @@ public partial class OBSEventsSettings : UserControl
     {
         textReplayFilename.Enabled = checkSaveBestSegments.Checked;
     }
+
+    private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        System.Diagnostics.Process.Start("https://github.com/absent-friend/LiveSplit.OBSEvents/wiki/Settings-Guide");
+    }
 }
