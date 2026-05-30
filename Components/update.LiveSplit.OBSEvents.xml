@@ -38,4 +38,13 @@
         </changelog>
     </update>
 
+    <update version="1.1.1">
+        <files>
+            <file path="/v1.1.1/LiveSplit.OBSEvents.dll" status="changed"/>
+        </files>
+        <changelog>
+            <change>No longer breaks the updater.</change>
+        </changelog>
+    </update>
+
 </updates>
