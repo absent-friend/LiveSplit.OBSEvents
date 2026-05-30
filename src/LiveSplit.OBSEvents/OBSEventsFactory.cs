@@ -31,6 +31,5 @@ public sealed class OBSEventsFactory : IComponentFactory
     public IComponent Create(LiveSplitState state)
         => new OBSEventsComponent(state);
 
-    // This property is unused.
-    public string UpdateName => throw null;
+    public string UpdateName => ComponentName;
 }
