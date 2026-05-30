@@ -11,7 +11,7 @@
 
   <Folder Name="/misc/">
     <File Path=".gitignore" />
-    <File Path="Components/update.LiveSplit.GoldGrabber.xml" />
+    <File Path="Components/update.LiveSplit.OBSEvents.xml" />
     <File Path="Directory.Build.props" />
   </Folder>
 
