@@ -1,12 +1,14 @@
 ﻿using LiveSplit.Model;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace LiveSplit.OBSEvents.Utility
 {
     internal class ReplayFilenameFormatter
     {
-        private static readonly Regex KEYWORD = new("%(?<keyword>game|category|segment|time|splitMS|splitS|splitM|splitH|date|day|month|year)");
+        private static readonly Regex SPLIT_NAME = new(@"(?:{.+})?\s*(?<name>.+)", RegexOptions.Compiled);
+        private static readonly Regex KEYWORD = new("%(?<keyword>game|category|segment|time|splitMS|splitS|splitM|splitH|date|day|month|year)", RegexOptions.Compiled);
 
         public static string Format(string format, LiveSplitState state, int splitIndex, TimeSpan segmentTime)
         {
@@ -16,7 +18,7 @@ namespace LiveSplit.OBSEvents.Utility
                 {
                     "game" => state.Run.GameName,
                     "category" => state.Run.CategoryName,
-                    "segment" => state.Run[splitIndex].Name,
+                    "segment" => FormatSegmentName(state, splitIndex),
                     "time" => FormatSegmentTime(segmentTime),
                     "splitMS" => $"{segmentTime.Milliseconds:D3}",
                     "splitS" => $"{segmentTime.Seconds:D2}",
@@ -48,6 +50,25 @@ namespace LiveSplit.OBSEvents.Utility
                 format = "s's'fff'ms'";
             }
             return segmentTime.ToString(format);
+        }
+
+        private static string FormatSegmentName(LiveSplitState state, int index)
+        {
+            if (!state.Layout.Components.Any(comp => comp.ComponentName == "Subsplits"))
+            {
+                return state.Run[index].Name;
+            }
+
+            ISegment segment = state.Run[index];
+            if (segment.Name.StartsWith("-") && index != state.Run.Count - 1)
+            {
+                return segment.Name.Substring(1);
+            }
+            else
+            {
+                var match = SPLIT_NAME.Match(segment.Name);
+                return match.Groups["name"].Value;
+            }
         }
     }
 }
